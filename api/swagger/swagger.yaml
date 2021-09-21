@@ -1,0 +1,297 @@
+swagger: '2.0'
+info:
+  description: 'This is a sample Maveric employee management server.'
+  version: 1.0.0
+  title: Maveric employee management server
+  contact:
+    email: sreeharshak@maveric-systems.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+host: localhost:3000
+basePath: /v1
+tags:
+  - name: employee
+    description: APIs to manage Maveric Employees
+  - name: designation
+    description: APIs to manage various designations in the organisation
+schemes:
+  - https
+  - http
+paths:
+  /employees:
+    x-swagger-router-controller: controller
+    post:
+      tags:
+        - employee
+      summary: Add a new employee to the organisation
+      description: ''
+      operationId: addEmployee
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Employee object that needs to be added 
+          required: true
+          schema:
+            $ref: '#/definitions/Employee'
+      responses:
+        '405':
+          description: Invalid input
+    get:
+      tags:
+        - employee
+      summary: 'Get list of all employees'
+      description: 'Get list of all employees'
+      operationId: getEmployees
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Request successfull
+          schema:
+              type: array
+              items:
+                $ref: '#/definitions/Employee'
+        '405':
+          description: Invalid input
+  /employees/{employeeId}:
+    x-swagger-router-controller: controller
+    get:
+      tags:
+        - employee
+      summary: Find employee by ID
+      description: Returns a single employee details
+      operationId: getEmployeeById
+      produces:
+        - application/json
+      parameters:
+        - name: employeeId
+          in: path
+          description: ID of employeeId to return
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Employee'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Emoployee not found
+    put:
+      tags:
+        - employee
+      summary: Update an existing employee
+      description: ''
+      operationId: updateEmployee
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Employee object that needs to be updated 
+          required: true
+          schema:
+            $ref: '#/definitions/Employee'
+        - name: employeeId
+          in: path
+          description: ID of employee to be updated
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '400':
+          description:  Invalid ID supplied
+        '404':
+          description:  not found
+        '405':
+          description: Validation exception
+    delete:
+      tags:
+        - employee
+      summary: Delete employee by ID
+      description: Delete a single employee based on Id
+      operationId: deleteEmployeeById
+      produces:
+        - application/json
+      parameters:
+        - name: employeeId
+          in: path
+          description: ID of employeeId to be deleted
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: string
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Emoployee not found
+  /designations:
+    x-swagger-router-controller: controller
+    post:
+      tags:
+        - designation
+      summary: Add a new designation 
+      description: ''
+      operationId: addDesignation
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Designation object that needs to be added 
+          required: true
+          schema:
+            $ref: '#/definitions/Designation'
+      responses:
+        '405':
+          description: Invalid input
+    get:
+      tags:
+        - designation
+      summary: 'Get list of all designations'
+      description: 'Get list of all designations'
+      operationId: getDesignations
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Request successfull
+          schema:
+              type: array
+              items:
+                $ref: '#/definitions/Designation'
+  /designations/{designationId}:
+    x-swagger-router-controller: controller
+    get:
+      tags:
+        - designation
+      summary: Find designation details by ID
+      description: Returns a single designation object details
+      operationId: getDesignationById
+      produces:
+        - application/json
+      parameters:
+        - name: designationId
+          in: path
+          description: ID of designation object to be  returned
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Designation'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Designatioon object not found
+    put:
+      tags:
+        - designation
+      summary: Update an existing designation object
+      description: ''
+      operationId: updateDesignation
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Designation object that needs to be updated 
+          required: true
+          schema:
+            $ref: '#/definitions/Designation'
+        - name: designationId
+          in: path
+          description: ID of employee to be updated
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '400':
+          description:  Invalid ID supplied
+        '404':
+          description:  not found
+        '405':
+          description: Validation exception
+    delete:
+      tags:
+        - designation
+      summary: Delete employee by ID
+      description: Delete a single designation based on Id
+      operationId: deleteDesignaionById
+      produces:
+        - application/json
+      parameters:
+        - name: designationId
+          in: path
+          description: Id of the designation object to be deleted
+          required: true
+          type: integer
+          format: int64
+      responses:
+        '200':
+          description: successful operation
+          schema:
+            type: string
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Designation object not found
+definitions:
+  Designation:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      minExperienceRequired:
+        type: integer
+        format: int32
+      responsibility:
+        type: string
+      designation:
+        type: string
+        description: Various designations
+  Employee:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      username:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+      phone:
+        type: string
+      empId:
+        type: string
+      designation:
+        type: integer
+        format: int32
+        description: Refers to the designation ids in the Desognation table
+   
